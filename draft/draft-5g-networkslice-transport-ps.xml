@@ -34,10 +34,10 @@
 <!-- end of list of popular I-D processing instructions -->
 
 
-<rfc category="info" docName="draft-mink-xxx-5g-ns-transport-ps-00">
+<rfc category="info" docName="draft-mink-5g-ns-transport-ps-00">
   <!-- ***** FRONT MATTER ***** -->
   <front>
-    <title abbrev="draft-mink-xxx-5g-ns-transport-ps-00">
+    <title abbrev="draft-mink-5g-ns-transport-ps-00">
       Analysis and Problem Statements for Interworking between 5G Network Slicing and Transport Network
     </title>
 
@@ -45,11 +45,11 @@
       <organization>KDDI Research</organization>
       <address>
         <postal>
-          <street/>
-          <city/>
+          <street>2-1-15, Ohara, Fujimino-shi</street>
+          <city>Saitama</city>
           <region/>
-          <code/>
-          <country/>
+          <code>356-8502</code>
+          <country>JP</country>
         </postal>
         <email>ta-miyasaka@kddi-research.jp</email>
       </address>
@@ -86,9 +86,9 @@
 
     <date day="26" month="June" year="2018"/>
 
-    <area>Internet Area</area>
+    <area></area>
 
-    <workgroup>xxx</workgroup>
+    <workgroup></workgroup>
 
     <keyword>I-D</keyword>
 
@@ -486,7 +486,6 @@
               <t>
                 From control plane perspective, the NSI ID is not signaled to the user plane function such as UPF.
                 PFCP is extended for 5G control plane protocol in <xref target="TS.29.244-3GPP" />, however, the NSI ID is not signaled to the user plane function.
-                <!-- N4?Forwarding Action Rule?Destination Interface?????????? -->
               </t>
             </list>
             For this problem statement, we have to statically configure policy based routing(PBR) based traffic engineering in 5G network function.
@@ -564,36 +563,10 @@
             Therefore, the source IP address and the destination IP address are common among NS2 and NS3, so we cannot create an adequate PBR rule for each network slice instance.
           </t>
         </section>
-      <section title="Interworking Analysis outside 5G Core Network">
-        <t>
-          This section describes an analysis on interworking between 5G network slicing and transport network outside 5G core network.
-        </t>
+      <section title="Analysis outside 5G Core Network">
         <t>
           TBD
         </t>
-        <figure anchor="fig_interwork_outside_5gc" title="Example for PBR based traffic engineering">
-            <artwork align="center"><![CDATA[
-+ - - - - - - - - - - - +
-|  NS1 (NSI ID=1)       |
-   +------+     +-----+
-|  | UPFa |-----| DNa |-|-------+
-   +------+     +-----+         |
-+ - - - - - - - - - - - +       |
-+ - - - - - - - - - - - +       |
-|  NS2 (NSI ID=2)       |       |
-   +------+     +-----+        ----     +----------+
-|  |      |-----| DNb |-|-----( TN )----|App Server|
-   |      |     +-----+        ----     +----------+
-|- |      | - - - - - - +       |
- - | UPFb | - - - - - - +       |
-|  |      |             |       |
-   |      |     +-----+         |
-|  |      |-----| DNc |-|-------+
-   +------+     +-----+
-|  NS3 (NSI ID=3)       |
-+ - - - - - - - - - - - +
-]]></artwork>
-          </figure>
 
       </section>
     </section>
@@ -616,21 +589,39 @@
       <t>
         The following list summarizes problem statement for the interworking outside 5G core network.
       </t>
+      <t>
+        <list style="format [PS-Interwork-%d]:" counter="ps-interwork2">
+          <t>
+            TBD
+          </t>
+        </list>
+      </t>
+    </section>
+
+    <section title="Conclusion">
+      <t>
+        This document summarizes problem statements for interworking between 5G network slicing and transport network.
+        Our analysis shows the traffic engineering for 5G network slicing is achieved by using policy based routing.
+        However, if 5G network function, e.g., UPF, is shared among different network slice instance,
+        there is a case that the traffic engineering is not achieved because the 5G network function cannot distinguish network slice instance [PS-Interwork-2].
+        This issue is inevitable under current 5G specification and we need to give the feedback to 3GPP to solve the issue.
+      </t>
+      <t>
+        From IETF point of view, "transport network management system" is required from 3GPP SA5 WG as described in <xref target="sec_manage_system"/>.
+        This transport network management system needs to serve a transport network related request sent from 3GPP management system,
+        this means the transport network management system needs to provide API to 3GPP management system to control transport network from 3GPP side.
+        Therefore IETF needs to collaborate with 3GPP, especially for 3GPP SA5 WG, and
+        examine if current standardized technology and framework in IETF activity fulfill requirements from 3GPP.
+      </t>
     </section>
 
     <section title="Security Consideration">
     <t>TBD</t>
     </section>
-
-
-    <section title="IANA Considerations">
-    <t>This document does not require any action from IANA.</t>
-    </section>
-
+    
     <section title="Acknowledgement">
     <t>
-    The author would like to thank XXX for reviewing various iterations of
-    the document and for providing content into various sections.
+    The author would like to thank Takeshi Usui, Satoru Matsushima, Shunsuke Homma for their useful comments.
     </t>
     </section>
 
@@ -648,18 +639,6 @@
     </references>
 -->
     <references title="Informative References">
-
-      <reference anchor='TR.29.891-3GPP' target="http://www.3gpp.org/FTP/Specs/2017-12/Rel-15/29_series/29891-f00.zip">
-        <front>
-        <title>3GPP TR 29.891 (V15.0.0): 5G System Phase 1, CT WG4 Aspects</title>
-        <author>
-        <organization>
-        3rd Generation Partnership Project (3GPP)
-        </organization>
-        </author>
-        <date month="December" year="2017"/>
-        </front>
-      </reference>
 
       <reference anchor='TS.29.244-3GPP' target="http://www.3gpp.org/FTP/Specs/2018-03/Rel-15/29_series/29244-f10.zip">
         <front>
@@ -697,93 +676,9 @@
         </front>
       </reference>
 
-      <reference anchor='TS.23.502-3GPP' target="http://www.3gpp.org/FTP/Specs/2018-03/Rel-15/23_series/23502-f10.zip">
-        <front>
-        <title>3GPP TS 23.502 (V15.1.0): Procedures for 5G System; Stage 2</title>
-        <author>
-        <organization>
-        3rd Generation Partnership Project (3GPP)
-        </organization>
-        </author>
-        <date month="March" year="2018"/>
-        </front>
-      </reference>
-
-      <reference anchor='TS.23.503-3GPP'  target="http://www.3gpp.org/FTP/Specs/2018-03/Rel-15/23_series/23503-f10.zip">
-        <front>
-        <title>3GPP TS 23.503 (V15.1.0): Policy and Charging Control System for 5G Framework; Stage 2</title>
-        <author>
-        <organization>
-        3rd Generation Partnership Project (3GPP)
-        </organization>
-        </author>
-        <date month="March" year="2018"/>
-        </front>
-      </reference>
-
-      <reference anchor='TS.38.300-3GPP'  target="http://www.3gpp.org/FTP/Specs/2018-03/Rel-15/38_series/38300-f10.zip">
-        <front>
-        <title>3GPP TS 38.300 (v15.1.0): NR and NG-RAN Overall Description; Stage 2</title>
-        <author>
-        <organization>
-        3rd Generation Partnership Project (3GPP)
-        </organization>
-        </author>
-        <date month="March" year="2018"/>
-        </front>
-      </reference>
-
-      <reference anchor='TS.38.401-3GPP'  target="http://www.3gpp.org/FTP/Specs/2018-03/Rel-15/38_series/38401-f10.zip">
-        <front>
-        <title>3GPP TS 38.401 (v15.1.0): NG-RAN; Architecture Description</title>
-        <author>
-        <organization>
-        3rd Generation Partnership Project (3GPP)
-        </organization>
-        </author>
-        <date month="March" year="2018"/>
-        </front>
-      </reference>
-
-      <reference anchor='TS.38.415-3GPP'  target="http://ftp.3gpp.org//Specs/archive/38_series/38.415/38415-100.zip">
-        <front>
-        <title>3GPP TS 38.415 (v1.0.0): NG-RAN; PDU Session User Plane protocol (work in progress)</title>
-        <author>
-        <organization>
-        3rd Generation Partnership Project (3GPP)
-        </organization>
-        </author>
-        <date month="June" year="2018"/>
-        </front>
-      </reference>
-
-      <reference anchor='TS.22.261-3GPP'  target="http://www.3gpp.org/FTP/Specs/2018-03/Rel-15/22_series/22261-f40.zip">
-        <front>
-        <title>3GPP TS 22.261 (V15.4.0): Service requirements for 5G system stage 1</title>
-        <author>
-        <organization>
-        3rd Generation Partnership Project (3GPP)
-        </organization>
-        </author>
-        <date month="March" year="2018"/>
-        </front>
-      </reference>
-
        <reference anchor='TS.28.530-3GPP'  target="http://ftp.3gpp.org//Specs/archive/28_series/28.530/28530-100.zip">
         <front>
         <title>3GPP TS 28.530 (V1.0.0): Telecommunication management; Management and orchestration of networks and network slicing; Concepts, use cases and requirements</title>
-        <author>
-        <organization>
-        3rd Generation Partnership Project (3GPP)
-        </organization>
-        </author>
-        <date month="June" year="2018"/>
-        </front>
-      </reference>
-
-       <reference anchor='TS.29.561-3GPP'  target="http://www.3gpp.org/FTP/Specs/2018-06/Rel-15/29_series/29561-f00.zip">
-        <front>
-        <title>3GPP TS 29.561 (V15.0.0): 5G System; Interworking between 5G Network and external Data Networks; Stage 3</title>
         <author>
         <organization>
         3rd Generation Partnership Project (3GPP)
