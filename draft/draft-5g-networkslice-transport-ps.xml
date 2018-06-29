@@ -646,18 +646,6 @@
 -->
     <references title="Informative References">
 
-      <reference anchor='TR.29.891-3GPP' target="http://www.3gpp.org/FTP/Specs/2017-12/Rel-15/29_series/29891-f00.zip">
-        <front>
-        <title>3GPP TR 29.891 (V15.0.0): 5G System Phase 1, CT WG4 Aspects</title>
-        <author>
-        <organization>
-        3rd Generation Partnership Project (3GPP)
-        </organization>
-        </author>
-        <date month="December" year="2017"/>
-        </front>
-      </reference>
-
       <reference anchor='TS.29.244-3GPP' target="http://www.3gpp.org/FTP/Specs/2018-03/Rel-15/29_series/29244-f10.zip">
         <front>
         <title>3GPP TS 29.244 (V15.1.0): Interface between the Control Plane and the User Plane Nodes; Stage 3</title>
@@ -694,93 +682,9 @@
         </front>
       </reference>
 
-      <reference anchor='TS.23.502-3GPP' target="http://www.3gpp.org/FTP/Specs/2018-03/Rel-15/23_series/23502-f10.zip">
-        <front>
-        <title>3GPP TS 23.502 (V15.1.0): Procedures for 5G System; Stage 2</title>
-        <author>
-        <organization>
-        3rd Generation Partnership Project (3GPP)
-        </organization>
-        </author>
-        <date month="March" year="2018"/>
-        </front>
-      </reference>
-
-      <reference anchor='TS.23.503-3GPP'  target="http://www.3gpp.org/FTP/Specs/2018-03/Rel-15/23_series/23503-f10.zip">
-        <front>
-        <title>3GPP TS 23.503 (V15.1.0): Policy and Charging Control System for 5G Framework; Stage 2</title>
-        <author>
-        <organization>
-        3rd Generation Partnership Project (3GPP)
-        </organization>
-        </author>
-        <date month="March" year="2018"/>
-        </front>
-      </reference>
-
-      <reference anchor='TS.38.300-3GPP'  target="http://www.3gpp.org/FTP/Specs/2018-03/Rel-15/38_series/38300-f10.zip">
-        <front>
-        <title>3GPP TS 38.300 (v15.1.0): NR and NG-RAN Overall Description; Stage 2</title>
-        <author>
-        <organization>
-        3rd Generation Partnership Project (3GPP)
-        </organization>
-        </author>
-        <date month="March" year="2018"/>
-        </front>
-      </reference>
-
-      <reference anchor='TS.38.401-3GPP'  target="http://www.3gpp.org/FTP/Specs/2018-03/Rel-15/38_series/38401-f10.zip">
-        <front>
-        <title>3GPP TS 38.401 (v15.1.0): NG-RAN; Architecture Description</title>
-        <author>
-        <organization>
-        3rd Generation Partnership Project (3GPP)
-        </organization>
-        </author>
-        <date month="March" year="2018"/>
-        </front>
-      </reference>
-
-      <reference anchor='TS.38.415-3GPP'  target="http://ftp.3gpp.org//Specs/archive/38_series/38.415/38415-100.zip">
-        <front>
-        <title>3GPP TS 38.415 (v1.0.0): NG-RAN; PDU Session User Plane protocol (work in progress)</title>
-        <author>
-        <organization>
-        3rd Generation Partnership Project (3GPP)
-        </organization>
-        </author>
-        <date month="June" year="2018"/>
-        </front>
-      </reference>
-
-      <reference anchor='TS.22.261-3GPP'  target="http://www.3gpp.org/FTP/Specs/2018-03/Rel-15/22_series/22261-f40.zip">
-        <front>
-        <title>3GPP TS 22.261 (V15.4.0): Service requirements for 5G system stage 1</title>
-        <author>
-        <organization>
-        3rd Generation Partnership Project (3GPP)
-        </organization>
-        </author>
-        <date month="March" year="2018"/>
-        </front>
-      </reference>
-
        <reference anchor='TS.28.530-3GPP'  target="http://ftp.3gpp.org//Specs/archive/28_series/28.530/28530-100.zip">
         <front>
         <title>3GPP TS 28.530 (V1.0.0): Telecommunication management; Management and orchestration of networks and network slicing; Concepts, use cases and requirements</title>
-        <author>
-        <organization>
-        3rd Generation Partnership Project (3GPP)
-        </organization>
-        </author>
-        <date month="June" year="2018"/>
-        </front>
-      </reference>
-
-       <reference anchor='TS.29.561-3GPP'  target="http://www.3gpp.org/FTP/Specs/2018-06/Rel-15/29_series/29561-f00.zip">
-        <front>
-        <title>3GPP TS 29.561 (V15.0.0): 5G System; Interworking between 5G Network and external Data Networks; Stage 3</title>
         <author>
         <organization>
         3rd Generation Partnership Project (3GPP)
