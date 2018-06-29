@@ -563,7 +563,7 @@
             Therefore, the source IP address and the destination IP address are common among NS2 and NS3, so we cannot create an adequate PBR rule for each network slice instance.
           </t>
         </section>
-      <section title="Interworking Analysis outside 5G Core Network">
+      <section title="Analysis outside 5G Core Network">
         <t>
           TBD
         </t>
