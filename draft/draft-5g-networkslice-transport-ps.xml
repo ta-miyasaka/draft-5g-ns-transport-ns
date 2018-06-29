@@ -599,7 +599,20 @@
     </section>
 
     <section title="Conclusion">
-
+      <t>
+        This document summarizes problem statements for interworking between 5G network slicing and transport network.
+        Our analysis shows the traffic engineering for 5G network slicing is achieved by using policy based routing.
+        However, if 5G network function, e.g., UPF, is shared among different network slice instance,
+        there is a case that the traffic engineering is not achieved because the 5G network function cannot distinguish network slice instance [PS-Interwork-2].
+        This issue is inevitable under current 5G specification and we need to give the feedback to 3GPP to solve the issue.
+      </t>
+      <t>
+        From IETF point of view, "transport network management system" is required from 3GPP SA5 WG as described in <xref target="sec_manage_system"/>.
+        This transport network management system needs to serve a transport network related request sent from 3GPP management system,
+        this means the transport network management system needs to provide API to 3GPP management system to control transport network from 3GPP side.
+        Therefore IETF needs to collaborate with 3GPP, especially for 3GPP SA5 WG, and
+        examine if current standardized technology and framework in IETF activity fulfill requirements from 3GPP.
+      </t>
     </section>
 
     <section title="Security Consideration">
