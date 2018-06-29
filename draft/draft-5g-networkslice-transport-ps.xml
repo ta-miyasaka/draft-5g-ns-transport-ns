@@ -34,10 +34,10 @@
 <!-- end of list of popular I-D processing instructions -->
 
 
-<rfc category="info" docName="draft-mink-xxx-5g-ns-transport-ps-00">
+<rfc category="info" docName="draft-mink-5g-ns-transport-ps-00">
   <!-- ***** FRONT MATTER ***** -->
   <front>
-    <title abbrev="draft-mink-xxx-5g-ns-transport-ps-00">
+    <title abbrev="draft-mink-5g-ns-transport-ps-00">
       Analysis and Problem Statements for Interworking between 5G Network Slicing and Transport Network
     </title>
 
@@ -45,11 +45,11 @@
       <organization>KDDI Research</organization>
       <address>
         <postal>
-          <street/>
-          <city/>
+          <street>2-1-15, Ohara, Fujimino-shi</street>
+          <city>Saitama</city>
           <region/>
-          <code/>
-          <country/>
+          <code>356-8502</code>
+          <country>JP</country>
         </postal>
         <email>ta-miyasaka@kddi-research.jp</email>
       </address>
@@ -86,9 +86,9 @@
 
     <date day="26" month="June" year="2018"/>
 
-    <area>Internet Area</area>
+    <area></area>
 
-    <workgroup>xxx</workgroup>
+    <workgroup></workgroup>
 
     <keyword>I-D</keyword>
 
@@ -486,7 +486,6 @@
               <t>
                 From control plane perspective, the NSI ID is not signaled to the user plane function such as UPF.
                 PFCP is extended for 5G control plane protocol in <xref target="TS.29.244-3GPP" />, however, the NSI ID is not signaled to the user plane function.
-                <!-- N4?Forwarding Action Rule?Destination Interface?????????? -->
               </t>
             </list>
             For this problem statement, we have to statically configure policy based routing(PBR) based traffic engineering in 5G network function.
@@ -566,34 +565,8 @@
         </section>
       <section title="Interworking Analysis outside 5G Core Network">
         <t>
-          This section describes an analysis on interworking between 5G network slicing and transport network outside 5G core network.
-        </t>
-        <t>
           TBD
         </t>
-        <figure anchor="fig_interwork_outside_5gc" title="Example for PBR based traffic engineering">
-            <artwork align="center"><![CDATA[
-+ - - - - - - - - - - - +
-|  NS1 (NSI ID=1)       |
-   +------+     +-----+
-|  | UPFa |-----| DNa |-|-------+
-   +------+     +-----+         |
-+ - - - - - - - - - - - +       |
-+ - - - - - - - - - - - +       |
-|  NS2 (NSI ID=2)       |       |
-   +------+     +-----+        ----     +----------+
-|  |      |-----| DNb |-|-----( TN )----|App Server|
-   |      |     +-----+        ----     +----------+
-|- |      | - - - - - - +       |
- - | UPFb | - - - - - - +       |
-|  |      |             |       |
-   |      |     +-----+         |
-|  |      |-----| DNc |-|-------+
-   +------+     +-----+
-|  NS3 (NSI ID=3)       |
-+ - - - - - - - - - - - +
-]]></artwork>
-          </figure>
 
       </section>
     </section>
@@ -616,6 +589,17 @@
       <t>
         The following list summarizes problem statement for the interworking outside 5G core network.
       </t>
+      <t>
+        <list style="format [PS-Interwork-%d]:" counter="ps-interwork2">
+          <t>
+            TBD
+          </t>
+        </list>
+      </t>
+    </section>
+
+    <section title="Conclusion">
+
     </section>
 
     <section title="Security Consideration">
