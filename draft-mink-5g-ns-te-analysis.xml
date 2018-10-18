@@ -1,0 +1,879 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+
+
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!-- One method to get references from the online citation libraries.
+     There has to be one entity for each item to be referenced.
+     An alternate method (rfc include) is described in the references.
+-->
+]>
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+<!-- used by XSLT processors -->
+<!-- For a complete list and description of processing instructions (PIs),
+      please see http://xml.resource.org/authoring/README.html. -->
+<!-- Below are generally applicable Processing Instructions (PIs) that most I-Ds might want to use.
+     (Here they are set differently than their defaults in xml2rfc v1.32) -->
+<?rfc strict="yes" ?>
+<!-- give errors regarding ID-nits and DTD validation -->
+<!-- control the table of contents (ToC) -->
+<?rfc toc="yes"?>
+<!-- generate a ToC -->
+<?rfc tocdepth="4"?>
+<!-- the number of levels of subsections in ToC. default: 3 -->
+<!-- control references -->
+<?rfc symrefs="yes"?>
+<!-- use symbolic references tags, i.e, [RFC2119] instead of [1] -->
+<?rfc sortrefs="yes" ?>
+<!-- sort the reference entries alphabetically -->
+<!-- control vertical white space
+     (using these PIs as follows is recommended by the RFC Editor) -->
+<?rfc compact="yes" ?>
+<!-- do not start each main section on a new page -->
+<?rfc subcompact="no" ?>
+<!-- keep one blank line between list items -->
+<!-- end of list of popular I-D processing instructions -->
+
+
+<rfc category="info" docName="draft-mink-5g-ns-te-analysis-00">
+  <!-- ***** FRONT MATTER ***** -->
+  <front>
+    <title abbrev="draft-mink-5g-ns-te-analysis-00">
+      Analysis on Traffic Engineering for 5G Network Slicing
+    </title>
+
+    <author fullname="Tomonobu Niwa" initials="T." surname="Niwa">
+      <organization>KDDI</organization>
+      <address>
+        <postal>
+          <street>3-22-7, Yoyogi, Shibuya-ku</street>
+          <city>Tokyo</city>
+          <region/>
+          <code>151-0053</code>
+          <country>JP</country>
+        </postal>
+        <email>to-niwa@kddi.com</email>
+      </address>
+    </author>
+
+    <author fullname="Kenji Kumaki" initials="K." surname="Kumaki">
+      <organization>KDDI</organization>
+      <address>
+        <postal>
+          <street>3-22-7, Yoyogi, Shibuya-ku</street>
+          <city>Tokyo</city>
+          <region/>
+          <code>151-0053</code>
+          <country>JP</country>
+        </postal>
+        <email>ke-kumaki@kddi.com</email>
+      </address>
+    </author>
+
+    <author fullname="Takuya Miyasaka" initials="T." surname="Miyasaka">
+      <organization>KDDI Research</organization>
+      <address>
+        <postal>
+          <street>2-1-15, Ohara, Fujimino-shi</street>
+          <city>Saitama</city>
+          <region/>
+          <code>356-8502</code>
+          <country>JP</country>
+        </postal>
+        <email>ta-miyasaka@kddi-research.jp</email>
+      </address>
+    </author>
+
+    <!-- TO BE FIXED -->
+    <date day="22" month="October" year="2018"/>
+
+    <area></area>
+
+    <workgroup></workgroup>
+
+    <keyword>I-D</keyword>
+
+    <abstract>
+      <t>
+        This document describes analysis on traffic engineering for 5G Network Slice that is expected to flexibly and dynamically fit various requrements, e.g., larger bandwidth, reliable and lower latency, and massive number of communications. 3GPP has introduced the Network Slice concept in 5G architecture (3GPP Release 15), however, it mainly focused on mobile domains (i.e., 5G RAN and 5G Core). In order to meet the requrements, the Network Slice needs to be designed and operated across multiple network domains including underlying IP transport network. This document analyzes current 3GPP 5G Network Slice architecture and summarizes problem statements for interworking between the Network Slice and the transport network.
+      </t>
+    </abstract>
+  </front>
+
+  <middle>
+    <section title="Introduction">
+      <t>
+        A Network Slice(NS) is expected to cater to much greater diversity of requirements for wide variety of services such as V2X services and factory automation. For the sake of optimized networks to serve these service characteristics, 3GPP is leading a NS concept in 5G system (3GPP Release 15). 3GPP NS is defined as a logical network that provides specific network capabilities and network characteristics, while it covers limited domains and mainly focuses on an isolation for 5G network function instances.
+      </t>
+      <t>
+        The actual value of NS can be acquired when it is designed and operated from end-to-end(E2E) perspectives since the service would be formed by not only 3GPP part but non-3GPP parts including transport networks. Here, the E2E means all network domains where the NS penetrates. Network operators anticipate that the introduction of NS technology is possible to tailor the network to fit for service-oriented demands in a timely and cost-effective way with logical resource isolation, which in turn reduces OPEX and CAPEX.
+      </t>
+      <t>
+        The document concentrates on traffic engineering on transport network for 5G NS. There are much various characteristics required by 5G NS such as larger bandwidth and reriable low delay. The interworking between transport networks and the NS can be classified into two parts: inside and outside 5G system. Inside 5G system, a network session among UE, RAN, UPF and DN can be identified as a NS with one or more QoS Flow rules, and thus its underlying transport network shall perform traffic enginnering along with the requrements on the NS. Outside 5G system, a traffic path on transport network shall be tied up in association with a NS managed in 5G system to guarantee quality of E2E services.
+      </t>
+      <t>
+        This document analyzes current 5G NS architecture discussed in 3GPP, and then summarizes problem statements and possible solutions for interworking between the NS and transport networks.
+      </t>
+      <section title="Scope of this document">
+        <t>
+          The scope of this document is to analyze interworking between 5G NS and transport networks and summarize problem statements for the interworking. <xref target="fig_int_ns_te" /> shows an E2E communication between UE and CP(Content Provider Server) on 5G NS environment.
+        </t>
+        <t>
+          There are two different transport networks in <xref target="fig_int_ns_te" />: the transport network inside 5G core network consists of R1, R2, R3, and R4 and the transport network outside 5G core network consists of R5, R6, R7, and R8. Both inside and outside networks are within the scope of this document.
+        </t>
+        <figure anchor="fig_int_ns_te" title="E2E communication between UE and CP">
+            <artwork align="center"><![CDATA[
+      + - - - - - - - - - - - - - - - - - - +
+      |  Network Slice Instance (NSI1)      |
++--+  | +---+         +---+          +---+  |
+|UE+----+RAN|         |UPF+----------+DN |  |
++--+  | +-+-+         +-+-+          +-+-+  |
+      + - | - - - - - - | - - - - - - -| - -+
+          |             |              |
+    + - - | - - - - - - |- - +   + - - | - - - - - - - - - +
+    |     |             |    |   |     |                   |
+          |   +----+    |              |    +----+
+    |     |   | R2 |    |    |   |     |    | R6 |         |
+          |   +----+    |              |    +----+
+    |     |  /      \   |    |   |     |   /      \        |
+       +--+-+         +-+--+         +-+--+         +----+     +--+
+    |  | R1 |         | R4 | |   |   | R5 |         | R8 +-----+CP|
+       +--+-+         +-+--+         +-+--+         +----+     +--+
+    |     |  \      /   |    |   |     |   \      /        |
+          |   +----+    |              |    +----+
+    |     |   | R3 |    |    |   |     |    | R7 |         |
+          |   +----+    |              |    +----+
+    |     |  Transport  |    |   |     |  Transport        |
+          |  Network    |              |  Network
+    |     |  inside 5GC |    |   |     |  outside 5GC      |
+    + - - | - - - - - - |- - +   + - - | - - - - - - - - - +
+          |             |              |
+      + - | - - - - - - |- - - - - - - | - +
++--+  | +-+-+         +-+-+          +-+-+ |
+|UE+----+RAN|         |UPF+----------+DN | |
++--+  | +---+         +---+          +---+ |
+      |  Network Slice Instance (NSI2)     |
+      + - - - - - - - - - - - - - - - - - -+
+]]></artwork>
+          </figure>
+      </section>
+      <section title="Terminology">
+        <t>
+          <list style="symbols">
+            <t>
+              Network Slice/Network Slicing (NS)
+            </t>
+          </list>
+          A Network Slice or Network Slicing is defined as "a logical network that provides specific network capabilities and network characteristics" in <xref target="TS.23.501-3GPP" />. It is defined whithin a PLMN(Public Land Mobile Network) and shall include core network control plane and user plane network functions.
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              Network Slice Instance (NSI)
+            </t>
+          </list>
+          Network Slice Instance is defined as "a set of network function instances and the required resources (e.g. compute, storage and networking resources) which form a deployed NS" in <xref target="TS.23.501-3GPP" />.
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              Transport network (TN)
+            </t>
+          </list>
+          The definition of transport network in this document is a network which provides network connectivity to 5G network functions such as UPF(User Plane Function). The scope of transport network in this document is limited to layer-3 network, thus IPv4 and IPv6. This is because 3GPP adopted IPv4/IPv6 as a 5G user plane and the document focuses on traffic engineering for NS.
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              Traffic engineering (TE)
+            </t>
+          </list>
+          The definition of traffic engineering in this document is to control the traffic path of IPv4/IPv6 packet in order to fulfill each NS's requirements. (e.g. bandwidth and latency)
+        </t>
+        <t>
+          For example, there are two NSIs in <xref target="fig_int_ns_te" />: NSI1 and NSI2. Suppose NSI1 provides a latency sensitive service such as V2X (in this case, UE is an automotive vehicle and CP is a control/monitoring server operated by a car vendor), an operator needs to perform traffic engineering in transport network to select a path so that total latency between UE and CP can be minimized. When one-way latency is measured as follows:
+          <list style="symbols">
+            <t>R1->R2->R4 : 1 msec.</t>
+            <t>R1->R3->R4 : 2 msec.</t>
+            <t>R5->R6->R8 : 9 msec.</t>
+            <t>R5->R7->R8 : 6 msec.</t>
+          </list>
+          the traffic path of NSI1 in transport network inside 5G core network is R1->R2->R4 and the traffic path of NSI1 in transport network outside 5G core network is R5->R7->R8. Therefore, the NS with minimal latency from UE to CP is "UE->RAN->R1->R2->R4->UPF->DN->R5->R7->R8->CP."
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              Interworking
+            </t>
+          </list>
+          The definition of interworking in this document is a method to collaborate NSIs with transport networks on performing the traffic engineering which fulfills requirements of NS.
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              NSSAI (Network Slice Selection Assistance Information)
+            </t>
+          </list>
+          NSSAI is a collection of Single NSSAIs(S-NSSAIs) and may be a Configured NSSAI, a Requested NSSAI or an Allowed NSSAI.
+          S-NSSAI is componsed of a SST(Slice/Service Type) and SD(Slice Differentiator) which helps to identify a NSI a UE associated with. SST refers to the expected NS behaviour in terms of features and services. SD is optional information that complements the SST to differentiate among multiple NSs of the same SST.
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              Requrested NSSAI
+            </t>
+          </list>
+          Requested NSSAI is provided by a UE to a PLMN during registration, allowing to the network to select the serving AMF, NS and NSI for the UE. S-NSSAIs in Requested NSSAI are part of Allowed NSSAI and/or Configured NSSAI applicable for the PLMN.
+          If no Configured NSSAI and Allowed NSSAI for the PLMN are available, the S-NSSAIs in the Requested NSSAI correspond to the Default Configured NSSAI.
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              Allowed NSSAI
+            </t>
+          </list>
+          Allowed NSSAI is provide by the serving PLMN to UE during e.g. registration procedure, indicating the S-NSSAIs the UE could use in the serving PLMN for the current registration area and access type.
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              Configured NSSAI
+            </t>
+          </list>
+          Configured NSSAI may either be configured by a serving PLMN and apply to the serving PLMN, or be pre-configured by the HPLMN as a Default Configured NSSAI and apply to any PLMNs. There is at most one Configured NSSAI per a PLMN.
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              UPF (User Plane Function)
+            </t>
+          </list>
+          UPF handles the user plane path of PDU Sessions including Packet routing and forwarding and QoS enforcement. Deployment with a single UPF or multiple UPFs are supported for a PDU session. The selection of UPF attached to PDU session is performed by SMF.
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              SMF (Session Management Function)
+            </t>
+          </list>
+          SMF provides session management, UE IP address allocation, selection and control of UPF, control and coordination of charging data collection at UPF, etc.
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              AMF (Access and Mobility Management Function)
+            </t>
+          </list>
+          AMF provides Registration management, Connection management, Reachability management and Mobility Management.
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              DNN (Data Network Name)
+            </t>
+          </list>
+          DNN is equivalent to an APN which may be used for selecting SMF and UPFs for a PDU session.
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              NSSF (Network Slice Selectoin Function)
+            </t>
+          </list>
+          NSSF supports select the set of NSI serving the UE, determine the Allowed NSSAI and determinie the AMF set to be used to serve the UE.
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              NRF (Network Repository Function)
+            </t>
+          </list>
+          NRF maintains the network function profile including network function instance ID, NS related Identifiers(e.g. S-NSSAI, NSI ID), capacity information of network functions, and so forth.
+        </t>
+      </section>
+    </section>
+    <section title="Network Slice in 3GPP">
+      <section title="Procedure of Provisioning Network Slice">
+        <t>
+          A NSI includes core network control plane(e.g. SMF) and user plane network functions(e.g. UPF). Normally, the selection of NSI for a UE consists of two steps: serving AMF selection and NSI selection.
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              Serving AMF selection
+            </t>
+          </list>
+        </t>
+        <t>
+          The typical procedure of AMF selection is below:
+        </t>
+        <t>
+          UE -> RAN: When a UE is performing an Initial Registration to a PLMN, the UE provides Registration Request to RAN with S-NSSAIs in the Requested NSSAI. S-NSSAIs in Requested NSSAI are part of Configured NSSAI and/or Allowed NSSAI, when they are available. If not, Requested NSSAI is correspond to the Default Configured NSSAI which is configured by the HPLMN.
+        </t>
+        <t>
+          RAN -> AMF: RAN routes the Registration Request to a suitable AMF based on the Requested NSSAI. If the RAN is unable to select an appropriate AMF, it forwards the Registration Request to one of the default AMFs which is selected by RAN. When the AMF selected by RAN receives the Registration Request, the AMF may retrieve UE subscription information including the Subscribed S-NSSAIs, verify whether the S-NSSAIs in the Requested NSSAI are permitted based on the Subscribed S-NSSAIs, and determine whether the AMF can serve the UE, by querying the NSSF (Network Slice Selection Function) if necessary. The AMF confirms whether it can serve all the S-NSSAIs from the Requested NSSAI present in the Subscribed S-NSSAIs.
+        </t>
+        <t>
+          AMF -> UE: The Allowed NSSAI is then composed of the list of S-NSSAIs in the Requested NSSAI permitted based on the Subscribed S-NSSAIs, typically. Then, the AMF determines a Registration Area so that all S-NSSAIs of the Allowed NSSAI for this Registration Area are available in all Tracking Areas of the Registration Area and then return to the UE this Allowed NSSAI. 
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              NSI selection
+            </t>
+          </list>
+        </t>
+        <t>
+          In the PDU Session Establishment procedure, network function instances in NSI are selected by the AMF. When the UE triggers PDU Session Establishment, the AMF queries the NSSF in serving PLMN with the S-NSSAI from the Allowed NSSAI requested by the UE. Then, the NSSF selects the NSI, determines and returns the appropriate NRF(Network Repository Function) to be used to select network functions within the selected NSI, and optionally may return a NSI ID corresponding to the NSI. 
+          The AMF queries the appropriate NRF(Network Repository Function) to select an SMF in a NSI based on S-NSSAI, DNN, NSI-ID (if available) and other information e.g. UE subscription and local operator policies. Then, the AMF sends the S-NSSAI from the Allowed NSSAI to the selected SMF.
+        </t>
+        <t>
+          The selected SMF establishes a PDU session. The SMF selects one or more UPFs as needed and allocates an IP address/prefix for the PDU session in case of PDU Session Type IPv4 or IPv6 or IPv4v6. SMF may be locally configured with the information about the available UPFs. As a option, the UPF selection functionality in the SMF may also utilize the NRF to discover UPF instance(s). In this case, the SMF issues a request to the NRF and retrieve the UPF Provisioning Information consists of a list of (S-NSSAI, DNN) and of a SMF Area Identity the UPF can serve. 
+        </t>
+      </section>
+      <section title="Requrements of 5G Network Slice">
+        <t>
+          In <xref target="TS.22.261-3GPP" />, basic capabilties of NS are defined as the following:
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              Operation
+            </t>
+          </list>
+          Operators enable to create, modify including scale up/down, and delete a NS which can support the set of services and capabilities. A UE can be served by more than one NS simultaneously. The 5G system supports scaling of a NS, i.e., adaptation of its capacity.
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              Mobility Support
+            </t>
+          </list>
+          Operators enable to assign a UE to a NS, to move a UE from one NS to another, and to remove a UE from a NS based on subscription, UE capabilities, the access technology being used by the UE, policies and services provided by the NS.
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              Isolation
+            </t>
+          </list>
+          Traffic and services in one NS shall have no impact on those in other network slices in the same network. Creation, modification and deletion of a NS shall have no or minimal impact on traffic and services in other NS in the same network.
+        </t>
+        <t>
+          In <xref target="TS.23.501-3GPP" /> and <xref target="TS.23.502-3GPP" />, inclusion relations of NS is described as follows.
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              NSI vs. S-NSSAI
+            </t>
+          </list>
+            Based on the operator's operational or deployment needs, a NSI can be associated with one or more S-NSSAIs, and an S-NSSAI can be associated with one or more NSI. When an S-NSSAI is associated with more than one NSI, one of these NSIs serves a UE that is allowed to use this S-NSSAI. 
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              NSI vs. PDU session
+            </t>
+          </list>
+            A PDU Session belongs to one and only one specific NSI per PLMN. Different NSIs do not share a PDU Session, though different NS may have slice-specific PDU Sessions using the same DNN.
+        </t>
+        <t>
+          <list style="symbols">
+            <t>
+              NSI vs. UPF
+            </t>
+          </list>
+            TBD
+        </t>
+      </section>
+    </section>
+
+    <section title="Network Slicing in Transport Network">
+      <section title="Transport Network for End-to-End 5G Communication">
+        <t>
+          An E2E NS needs a cross-domain technology that covers 5G system and transport networks at least. 5G NS shall be isolated and can be dynamically deployed in association with UE mobility, service provisioning and capabilities required by the service. The selection of UPF for a PDU session is determined by SMF based on S-NSSAI and DNN. For E2E perspective, transport network should follow NS requrements; network connectivity between network functions in NSI and traffic path outside DN tied up with the NSI. The transport networks are classifled two parts: inside and outside 5G system as <xref target="fig_int_ns_te" />.
+        </t>
+        <section title="Transport Network inside 5G System">
+          <t>
+            A PDU session belongs to one and only one specific NSI in 5G system. 5G QoS model is based on QoS Flows that is the finest granularity of QoS differentiation in the PDU session. QoS Flow is characterised by QoS profile for RAN, QoS rules for UE and PDR(Packet Detection Rule) for UPF. DSCP can be optinally utilized to support QoS Flow, however, the QoS Flow does not correspond to the NS one by one. Therefore, a NS can not be identified from the persipective of transport networks. Regarding transport connectivity between different network functions in NSI, transport networks should take link requirements (e.g. NSI ID, topology, QoS parameters, etc.) from the NS into account.
+          </t>
+        </section>
+        <section title="Transport Network outside 5G System">
+          <t>
+            The S-NSSAI instructs which a PDU session associates with NSI. In the current 3GPP specification, transport networks cannot recognize S-NSSAI and/or NSI ID directory from user plane, and thus cannot map NS inside 5G system to that of traffic path on transport networks. Therefore, the method to interwork between 5G system and transport network is required.
+          </t>
+        </section>
+        <section title="Management and Orchestration of 5G Network Slicing" anchor="sec_manage_system">
+          <t>
+            The management and orchestration of 5G network slicing is studied in 3GPP SA5.
+            This study includes creation, modification, and elimination of network slice instance from 3GPP management system.
+          </t>
+          <t>
+            In this 3GPP management system, the coordination with management system of non-3GPP parts also has been taken into account and transport network management is included in the scope of the management system. <xref target="fig_coordination_tn" /> shows a concept of 3GPP management system and coordination with transport network management system, which is described in section 4.7 of <xref target="TS.28.530-3GPP" />. However, detailed analysis for the coordination with a transport network management system is not studied.
+          </t>
+          <figure anchor="fig_coordination_tn" title="E2E communication between UE and CP">
+            <artwork align="center"><![CDATA[
+
+                  +------------------------+
+                  | 3GPP Management System |
+                  +------------------------+
+                             /|\
+                              |
+                              |
+                             \|/
+                    +-------------------+
+                    | Transport Network |
+                    | Management System |
+                    +-------------------+
+                      /|\    /|\    /|\
+                       |      |      |
+            +----------+      |      +------------+
+            |                 |                   |
+           \|/               \|/                 \|/
++---+     ----     +---+     ----     +---+     ----     +----------+
+|RAN|----( TN )----|UPF|----( TN )----|DN |----( TN )----|App Server|
++---+     ----     +---+     ----     +---+     ----     +----------+
+
+                                             * TN = Transport Network
+]]></artwork>
+          </figure>
+        </section>
+      </section>
+    </section>
+    <section title="Use Case for Interworking between 3GPP and Transport Network" anchor="sec_procedure">
+      <t>
+        <xref target="fig_NS_interwork_arch" /> illustrates a general procedure for an interworking between 5G Network Slicing and Transport Network Traffic Engineering and
+        we use following terminology in this figure.
+        <list style="symbols">
+          <t>
+            5G User Plane Function : A function which is related to 5G user plane. RAN, UPF, and DN are current 5G User Plane Fucntion defined by 3GPP.
+          </t>
+          <t>
+            NS Forwarding Policy DB : A database which maintains a forwarding policy which needs to be applied to each NS instance.
+          </t>
+          <t>
+            TE Indicator : An indicator which instructs an adequate forwarding policy to router for the NS instance and encoded in an incoming packet. MPLS label and SRv6 SRH are an example for TE indicator.
+          </t>
+          <t>
+            5G IP Packet : An IPv4/IPv6 packet sents from 5G network function.
+          </t>
+        </list>
+      </t>
+
+      <t>
+        The 5G network function performs the following procedures for an interworking.
+        <list style="numbers">
+          <t>
+            Recognize the NSI ID of an outgoing packet at 5G User Plane Function
+          </t>
+          <t>
+            Decide an adequate forwarding policy which is performed on this network slice instance by inquiring to the NS Forwarding Policy DB.
+          </t>
+          <t>
+            Encapsulate an outgoing 5G IP Packet with an adequate TE indicator for the forwarding policy of a network slice instance
+          </t>
+          <t>
+            Send the encapsulated packet to the transport network
+          </t>
+        </list>
+      </t>
+      <figure anchor="fig_NS_interwork_arch" title="Interworking Procedure">
+        <artwork align="center"><![CDATA[
+ 5G Network Function
++-----------------+
+|+---------------+|
+|| NS Forwarding ||
+|| Policy DB     ||
+|+---------------+|
+|   /|\    |      |
+|    |     |      |
+|    |     |      |
+|    |    \|/     |
+| +-------------+ |
+| |5G User Plane| |
+| |  Function   | | +------------+                  +------------+
+| +-------------+ | |TE Indicator|                  |TE Indicator|
+|       |         | +------------+      Router      +------------+
+|      \|/        | |5G IP Packet| +--------------+ |5G IP Packet|
+|  +----------+   | +------------+ | +----------+ | +------------+
+|  |Data Plane|---+----------------+>|Data Plane|-|-------------->
+|  +----------+   |                | +----------+ |    Next Router
++-----------------+                +--------------+
+]]></artwork>
+      </figure>
+      <t>
+        <xref target="fig_NS_interwork_arch_example" /> shows an example of interworking procedure.
+        In this example, the 5G network function uses MPLS-TE for traffic engineering in transport network and encapsulated with MPLS label which represents an adequate MPLS-TE tunnel which fulfills requirements of a network slice instance.
+        The following list describes the detailed procedure in this example.
+        <list style="numbers">
+          <t>
+            5G Network Function recognizes that the NSI ID of the outgoing packet is 123
+          </t>
+          <t>
+            5G Network Function resolves the required traffic engineering policy is the MPLS-TE tunnel 123 for the network slice instance
+          </t>
+          <t>
+            5G Network Function encapsulated the outgoing 5G IP packet with MPLS label of 123 which is the outgoing label of the MPLS-TE tunnel 123
+          </t>
+          <t>
+            5G Network Function sends the encapsulated packet to the transport network
+          </t>
+        </list>
+
+      </t>
+      <figure anchor="fig_NS_interwork_arch_example" title="Example of Interworking Procedure">
+      <artwork align="center"><![CDATA[
+ 5G Network Function
++-------------------+
+|+-----------------+|
+|| NS Forwarding   ||
+|| Policy DB       ||
+||                 ||
+||NSI ID:Policy    ||
+||   111:MPLS-TE   ||
+||       tunnel 111||
+||       (HighBW)  ||
+||   123:MPLS-TE   ||
+||       tunnel 123||
+||     (LowLatency)||
+|+-----------------+|
+|   /|\    |        |
+|    |     |        |
+|    |     |        |
+| +-------------+   | +------------+                  +------------+
+| |5G User Plane|   | | MPLS label |                  | MPLS label |
+| |  Function   |   | |    123     |                  |    234     |
+| +-------------+   | |(tunnel 123)|                  |(tunnel 123)|
+|       |           | +------------+      Router      +------------+
+|      \|/          | |5G IP Packet| +--------------+ |5G IP Packet|
+|  +----------+     | +------------+ | +----------+ | +------------+
+|  |Data Plane|-----+----------------+>|Data Plane|-|-------------->
+|  +----------+     |                | +----------+ |    Next Router
++-------------------+                +--------------+
+]]></artwork>
+      </figure>
+    </section>
+    <section title="Analysis on Interworking">
+      <t>
+        This section describes an analysis on an interworking between 5G network slicing and transport network both outside 5G core network and inside 5G core network.
+      </t>
+      <section title="Analysis Assumption" anchor="sec_analysis_assumption">
+        <t>
+          <xref target="fig_assumption_5g" /> and the following list illustrates an assumption on 5G network slicing for our analysis.
+          Sharing of network function (UPF and DN) among different network slice instances is suggested in section 4.5 of <xref target="TS.28.530-3GPP" />.
+          <list style="symbols">
+            <t>
+              UE can connect to the multiple network slice instances.
+            </t>
+            <t>
+              RAN is a common network function to select adequate network slice instance's UPF.
+            </t>
+            <t>
+              UPF may be shared between different network slice instances.
+              The shared UPF has a common IP address/prefix for an endpoint.
+            </t>
+            <t>
+              DN may be shared between different network slice instances.
+              The shared DN has a common IP address/prefix for an endpoint.
+            </t>
+          </list>
+        </t>
+        <figure anchor="fig_assumption_5g" title="Analysis Assumption">
+          <artwork align="center"><![CDATA[
+                + - - - - - - - - - - - - - - - - +
+                | NS1                             |
+                    +-----+     +-----+     +---+
+          +-----|---| UPF |-----| UPF |-----|   |-|
+          |         +-----+     +-----+     |   |
+          |     + - - - - - - - - - - - - - |DN | +
+          |     + - - - - - - - - - - - - - |   | +
+          |     | NS2                       |   | |
++--+    +-+-+                   +-----+     |   |
+|UE+----+RAN+---|---------------|     |-----|   |-|
++--+    +-+-+                   |     |     +---+
+          |     + - - - - - - - |     | - - - - - +
+          |     + - - - - - - - | UPF | - - - - - +
+          |     | NS3           |     |           |
+          |         +-----+     |     |     +---+
+          +-----|---| UPF |-----|     |-----|DN |-|
+                    +-----+     +-----+     +---+
+                + - - - - - - - - - - - - - - - - +
+]]></artwork>
+        </figure>
+        </section>
+
+        <section title="Analysis inside 5G Core Network">
+          <t>
+            This section describes an analysis on an interworking between 5G network slicing and transport network inside 5G core network based on the procedure described in <xref target="sec_procedure" />.
+            Problem statement in this analysis is emphasized as [PS-Interwork-X].
+          </t>
+          <t>
+            <list style="format [PS-Interwork-%d]:" counter="ps-interwork">
+              <t>
+                5G Network Function cannot recognize the NSI ID of an established PDU session. Therefore, statically configured Policy Based Routing(PBR) based traffic engineering is required.
+              </t>
+            </list>
+            5G Network Function cannot recognize the NSI ID of an established PDU session due to the following two reasons.
+            <list style="numbers">
+              <t>
+                From user plane perspective, the NSI ID is not encoded in any header including GTP-U extension header.
+                New PDU Session Container GTP-U extension header is introduced for 5G user plane in <xref target="TS.29.281-3GPP" />, but the extension header only includes QFI information.
+              </t>
+              <t>
+                From control plane perspective, the NSI ID is not signaled to the user plane function such as UPF.
+                PFCP is extended for 5G control plane protocol in <xref target="TS.29.244-3GPP" />, however, the NSI ID is not signaled to the user plane function.
+              </t>
+            </list>
+            For this problem statement, we have to statically configure policy based routing(PBR) based traffic engineering in 5G network function.
+            In <xref target="fig_example_pbr" />, an example for statically configured PBR in UPFb and UPFd is described in <xref target="fig_example_pbr_rib" />.
+          </t>
+          <figure anchor="fig_example_pbr" title="Example for PBR based traffic engineering">
+            <artwork align="center"><![CDATA[
+                + - - - - - - - - - - - - - - - - - - - +
+                | NS1 (NSI ID=1)                        |
+                      +------+     +------+     +-----+
+          +-----|-----| UPFa |-----| UPFb |-----| DNa | |
+          |           +------+     +------+     +-----+
+          |     + - - - - - - - - - - - - - - - - - - - +
+          |     + - - - - - - - - - - - - - - - - - - - +
+          |     | NS2 (NSI ID=2)                        |
++--+    +-+-+         +------+     +------+     +-----+
+|UE+----+RAN+---|-----|      |-----|      |-----| DNb | |
++--+    +---+         |      |     |      |     +-----+
+          |     + - - |      |- - -|      | - - - - - - +
+          |     + - - | UPFc |- - -| UPFd | - - - - - - +
+          |     |     |      |     |      |             |
+          |           |      |     |      |     +-----+
+          +-----|-----|      |-----|      |-----| DNc | |
+                      +------+     +------+     +-----+
+                | NS3 (NSI ID=3)                        |
+                + - - - - - - - - - - - - - - - - - - - +
+]]></artwork>
+          </figure>
+          <t>
+            In case of UPFd in <xref target="fig_example_pbr" />, statically configured PBR needs to include a source IP address classification
+            because a destination IP address of next UPF (UPFc) is common as UPFc is shared between NS2 and NS3 as described in <xref target="sec_analysis_assumption" />.
+          </t>
+          <figure anchor="fig_example_pbr_rib" title="PBR based traffic engineering">
+            <artwork align="center"><![CDATA[
+
+   +------------------------------------------------------------+
+   | Routing Table for UPFb                                     |
+   | - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -|
+   | IF: Subsequent Node IP address is <IP address of UPFa>     |
+   | THEN: Nexthop is <MPLS-TE tunnel 1> (for NS1)              |
+   |                                                            |
+   | IF: Subsequent Node IP address is <IP address of DNa>      |
+   | THEN: Nexthop is <MPLS-TE tunnel 2> (for NS2)              |
+   +------------------------------------------------------------+
+
+   +------------------------------------------------------------+
+   |Routing Table for UPFd                                      |
+   | - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -|
+   | IF: Subsequent Node IP address is <IP address of UPFc>     |
+   |     AND Previous Node IP address is <IP address of DNb>    |
+   | THEN: Nexthop is <MPLS-TE tunnel 1> (for NS2)              |
+   |                                                            |
+   | IF: Subsequent Node IP address is <IP address of DNb>      |
+   | THEN: Nexthop is <MPLS-TE tunnel 2> (for NS2)              |
+   |                                                            |
+   | IF: Subsequent Node IP address is <IP address of UPFc>     |
+   |     AND Previous Node IP address is <IP address of DNc>    |
+   | THEN: Nexthop is <MPLS-TE tunnel 3> (for NS3)              |
+   |                                                            |
+   | IF: Subsequent Node IP address is <IP address of DNc>      |
+   | THEN: Nexthop is <MPLS-TE tunnel 4> (for NS3)              |
+   +------------------------------------------------------------+
+]]></artwork>
+          </figure>
+          <t>
+            <list style="format [PS-Interwork-%d]:" counter="ps-interwork">
+              <t>
+                5G network function cannot classify a network slice instance by using PBR If both previous node and subsequent node are shared between different network slice instances.
+              </t>
+            </list>
+          </t>
+          <t>
+            For example, a routing table for UPFc in <xref target="fig_example_pbr" /> toward RAN node cannot classify NS2 and NS3,
+            because previous node is UPFb which is shared NS2 and NS3 and the subsequent node is RAN which is a common network function among network slice instances as described in <xref target="sec_analysis_assumption"/>.
+            Therefore, the source IP address and the destination IP address are common among NS2 and NS3, so we cannot create an adequate PBR rule for each network slice instance.
+          </t>
+        </section>
+      <section title="Analysis outside 5G Core Network">
+        <t>
+          TBD
+        </t>
+
+      </section>
+    </section>
+    <section title="Problem Statement Summary">
+      <t>
+        The following list summarizes problem statement for the interworking inside 5G core network.
+      </t>
+      <t>
+        <list style="format [PS-Interwork-%d]:" counter="ps-interwork2">
+          <t>
+            5G Network Function cannot recognize the NSI ID of the established PDU session. Therefore, statically configured Policy Based Routing(PBR) based traffic engineering is required
+          </t>
+        </list>
+        <list style="format [PS-Interwork-%d]:" counter="ps-interwork2">
+          <t>
+            5G network function cannot classify the network slice instance by using PBR If both previous node and subsequent node are shared between different network slice instances.
+          </t>
+        </list>
+      </t>
+      <t>
+        The following list summarizes problem statement for the interworking outside 5G core network.
+      </t>
+      <t>
+        <list style="format [PS-Interwork-%d]:" counter="ps-interwork2">
+          <t>
+            TBD
+          </t>
+        </list>
+      </t>
+    </section>
+
+    <section title="Conclusion">
+      <t>
+        This document summarizes problem statements for interworking between 5G network slicing and transport network.
+        Our analysis shows the traffic engineering for 5G network slicing is achieved by using policy based routing.
+        However, if 5G network function, e.g., UPF, is shared among different network slice instance,
+        there is a case that the traffic engineering is not achieved because the 5G network function cannot distinguish network slice instance [PS-Interwork-2].
+        This issue is inevitable under current 5G specification and we need to give the feedback to 3GPP to solve the issue.
+      </t>
+      <t>
+        From IETF point of view, "transport network management system" is required from 3GPP SA5 WG as described in <xref target="sec_manage_system"/>.
+        This transport network management system needs to serve a transport network related request sent from 3GPP management system,
+        this means the transport network management system needs to provide API to 3GPP management system to control transport network from 3GPP side.
+        Therefore IETF needs to collaborate with 3GPP, especially for 3GPP SA5 WG, and
+        examine if current standardized technology and framework in IETF activity fulfill requirements from 3GPP.
+      </t>
+    </section>
+
+    <section title="Security Consideration">
+    <t>TBD</t>
+    </section>
+
+    <section title="IANA Considerations">
+    <t>This document does not require any action from IANA.</t>
+    </section>
+
+    <section title="Acknowledgement">
+    <t>
+    The author would like to thank Takeshi Usui, Satoru Matsushima, Shunsuke Homma for their useful comments.
+    </t>
+    </section>
+
+  </middle>
+
+  <!-- ***** BACK MATTER ***** -->
+
+  <back>
+
+<!--
+    <references title="Normative References">
+
+    &RFC2119;
+
+    </references>
+-->
+    <references title="Informative References">
+
+      <!-- updated -->
+      <reference anchor='TS.29.244-3GPP' target="http://www.3gpp.org/ftp//Specs/archive/29_series/29.244/29244-f30.zip">
+        <front>
+        <title>3GPP TS 29.244 (V15.3.0): Interface between the Control Plane and the User Plane Nodes; Stage 3</title>
+        <author>
+        <organization>
+        3rd Generation Partnership Project (3GPP)
+        </organization>
+        </author>
+        <date month="September" year="2018"/>
+        </front>
+      </reference>
+
+      <!-- updated -->
+      <reference anchor='TS.29.281-3GPP' target="http://www.3gpp.org/ftp//Specs/archive/29_series/29.281/29281-f40.zip">
+        <front>
+        <title>3GPP TS 29.281 (V15.4.0): GPRS Tunneling Protocol User Plane (GTPv1-U)</title>
+        <author>
+        <organization>
+        3rd Generation Partnership Project (3GPP)
+        </organization>
+        </author>
+        <date month="September" year="2018"/>
+        </front>
+      </reference>
+
+      <!-- updated -->
+      <reference anchor='TS.23.501-3GPP' target="http://www.3gpp.org/ftp//Specs/archive/23_series/23.501/23501-f30.zip">
+        <front>
+        <title>3GPP TS 23.501 (V15.3.0): System Architecture for 5G System; Stage 2</title>
+        <author>
+        <organization>
+        3rd Generation Partnership Project (3GPP)
+        </organization>
+        </author>
+        <date month="September" year="2018"/>
+        </front>
+      </reference>
+
+      <!-- updated -->
+      <reference anchor='TS.28.530-3GPP'  target="http://www.3gpp.org/ftp//Specs/archive/28_series/28.530/28530-f00.zip">
+        <front>
+        <title>3GPP TS 28.530 (V15.0.0): Telecommunication management; Management and orchestration of networks and network slicing; Concepts, use cases and requirements</title>
+        <author>
+        <organization>
+        3rd Generation Partnership Project (3GPP)
+        </organization>
+        </author>
+        <date month="September" year="2018"/>
+        </front>
+      </reference>
+
+      <!-- added -->
+      <reference anchor='TS.22.261-3GPP'  target="http://www.3gpp.org/ftp//Specs/archive/22_series/22.261/22261-f60.zip">
+        <front>
+        <title>3GPP TS 22.261 (V15.6.0): Service requirements for the 5G system; Stage 1</title>
+        <author>
+        <organization>
+        3rd Generation Partnership Project (3GPP)
+        </organization>
+        </author>
+        <date month="September" year="2018"/>
+        </front>
+      </reference>
+
+      <!-- added -->
+      <reference anchor='TS.23.502-3GPP'  target="http://www.3gpp.org/ftp//Specs/archive/23_series/23.502/23502-f30.zip">
+        <front>
+        <title>3GPP TS 23.502 (V15.3.0): Procedures for the 5G System; Stage 2</title>
+        <author>
+        <organization>
+        3rd Generation Partnership Project (3GPP)
+        </organization>
+        </author>
+        <date month="September" year="2018"/>
+        </front>
+      </reference>
+
+      <!-- added but possible to be deleted due to TR -->
+      <reference anchor='TR.28.801-3GPP'  target="http://www.3gpp.org/ftp//Specs/archive/28_series/28.801/28801-f10.zip">
+        <front>
+        <title>3GPP TR 28.801 (V15.1.0): Study on management and orchestration of network slicing for next generation network</title>
+        <author>
+        <organization>
+        3rd Generation Partnership Project (3GPP)
+        </organization>
+        </author>
+        <date month="January" year="2018"/>
+        </front>
+      </reference>
+
+    </references>
+
+
+  </back>
+
+</rfc>
