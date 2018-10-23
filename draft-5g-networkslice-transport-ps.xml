@@ -291,6 +291,7 @@
         </t>
       </section>
     </section>
+
     <section title="Network Slice in 3GPP">
       <section title="Procedure of Provisioning Network Slice">
         <t>
@@ -369,7 +370,6 @@
           </list>
             The network may serve a single UE with one or more NSI simultaneously. Number of simultaneous connection of NSs per UE is limited by the number of S-NSSAIs in the Requested/Allowed NSSAI.
         </t>
-        <t>
         <t>
           <list style="symbols">
             <t>
@@ -758,7 +758,6 @@
     The author would like to thank Takeshi Usui, Satoru Matsushima, Shunsuke Homma for their useful comments.
     </t>
     </section>
-
   </middle>
 
   <!-- ***** BACK MATTER ***** -->
@@ -864,10 +863,6 @@
         <date month="January" year="2018"/>
         </front>
       </reference>
-
     </references>
-
-
   </back>
-
 </rfc>
