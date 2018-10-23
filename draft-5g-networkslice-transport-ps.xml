@@ -440,6 +440,93 @@
         </section>
       </section>
     </section>
+
+    <section title="Requirements for Traffic Engineering in 5G Network Slicing Transport Network">
+      <section title="Referenced Framework for Analysis">
+        <t>
+          We will use <xref target="reference_framework" /> as reference framework for our analysis.
+          We don't intend to introduce or propose any new framework.
+          We just details transport network of <xref target="fig_coordination_tn" /> and objective of this framework
+          is to introduce common terminology for explanation purpose at following sections
+          which describes requirements and use cases for traffic engineering in 5G network slicing
+          transport network.
+        </t>
+        <t>
+          Following terminology will be used at following sections.
+          <list style="symbols">
+            <t>
+              3GPP Management System : A management system which requests traffic engineering policy toward transport network between given 5G functions.
+            </t>
+            <t>
+              Transport Network Management System : A management system which provisions adequate traffic engineering policy toward PE and P routers.
+            </t>
+            <t>
+              PE router : A router which receives IP packet from 5G function and performs provisioned traffic engineering policy on the packet.
+            </t>
+            <t>
+              P router : A router which receives IP packet from PE router and performs provisioned traffic engineering policy on the packet.
+            </t>
+            <t>
+              5G function : A 3GPP defined functions which provides data plane functionality in 5GC (RAN, UPF, and DN)
+            </t>
+          </list>
+        </t>
+        <figure anchor="reference_framework" title="Reference Framework for Analysis">
+            <artwork align="center"><![CDATA[
+               +------------------------+
+               | 3GPP Management System |
+               +------------------------+
+                          /|\
+                           |
+                          \|/
+                 +-------------------+
+                 | Transport Network |
+                 | Management System |
+                 +-------------------+
+                          /|\
+             ______________|______________
+            |         |         |         |
+           \|/       \|/       \|/       \|/
++----+    +----+    +----+    +----+    +----+    +----+
+|5G  |____| PE |____| P  |____| P  |____| PE |____|5G  |
+|func|    |    | - -|    | - -|    | - -|    |    |func|
++----+    +----+    +----+    +----+    +----+    +----+
+   |      /       Transport Network         \        |
+   |     (_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _)       |
+   |                                                 |
+   |<- - - - - - - - - - - - - - - - - - - - - - - ->|
+   |  IP reachability provided by transport network  |
+]]></artwork>
+        </figure>
+      </section>
+      <section title="Restrictions">
+        <t>
+          We assume following restrictions for our analysys on requirement and use case section.
+          <list style="symbols">
+            <t>
+              5G function doesn't include any 5G Network Slicing information(e.g., S-NSSAI and NSI ID) on transmitted IP packet.
+              Currently <xref target="TS.29.281-3GPP" /> doesn't provides any GTP-U extension header which includes S-NSSAI or NSI ID.
+            </t>
+            <t>
+              5G function doesn't performs any traffic engineering operation(e.g., pushing MPLS-TE label on packet) for its attached transport network.
+              Currently 5G architecture document <xref target="TS.23.501-3GPP" /> doesn't specify any traffic engineering functionality on 5G functions.
+            </t>
+          </list>
+        </t>
+      </section>
+      <section title="Requirements">
+        <t>
+          TBD
+        </t>
+      </section>
+    </section>
+
+    <section title="Usecase">
+      <t>
+        TBD
+      </t>
+    </section>
+
     <section title="Use Case for Interworking between 3GPP and Transport Network" anchor="sec_procedure">
     <!-- Proposal: Separete Use cases: session-based and NSI-based traffic engineering-->
       <t>
