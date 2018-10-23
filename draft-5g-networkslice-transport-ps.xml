@@ -34,25 +34,24 @@
 <!-- end of list of popular I-D processing instructions -->
 
 
-<rfc category="info" docName="draft-mink-5g-ns-transport-ps-01">
+<rfc category="info" docName="draft-mink-5g-ns-transport-analysis-00">
   <!-- ***** FRONT MATTER ***** -->
   <front>
-    <title abbrev="draft-mink-5g-ns-transport-ps-01">
-      Analysis and Problem Statements for Interworking between 5G Network Slicing and Transport Network
-      <!-- Analysis on Traffic Engineering for 5G Network Slicing -->
+    <title abbrev="draft-mink-5g-ns-transport-analysis-00">
+      Analysis on Traffic Engineering for 5G Network Slicing
     </title>
 
-    <author fullname="Takuya Miyasaka" initials="T." surname="Miyasaka">
-      <organization>KDDI Research</organization>
+    <author fullname="Tomonobu Niwa" initials="T." surname="Niwa">
+      <organization>KDDI</organization>
       <address>
         <postal>
-          <street>2-1-15, Ohara, Fujimino-shi</street>
-          <city>Saitama</city>
+          <street>3-22-7, Yoyogi, Shibuya-ku</street>
+          <city>Tokyo</city>
           <region/>
-          <code>356-8502</code>
+          <code>151-0053</code>
           <country>JP</country>
         </postal>
-        <email>ta-miyasaka@kddi-research.jp</email>
+        <email>to-niwa@kddi.com</email>
       </address>
     </author>
 
@@ -70,19 +69,20 @@
       </address>
     </author>
 
-    <author fullname="Tomonobu Niwa" initials="T." surname="Niwa">
-      <organization>KDDI</organization>
+    <author fullname="Takuya Miyasaka" initials="T." surname="Miyasaka">
+      <organization>KDDI Research</organization>
       <address>
         <postal>
-          <street>3-22-7, Yoyogi, Shibuya-ku</street>
-          <city>Tokyo</city>
+          <street>2-1-15, Ohara, Fujimino-shi</street>
+          <city>Saitama</city>
           <region/>
-          <code>151-0053</code>
+          <code>356-8502</code>
           <country>JP</country>
         </postal>
-        <email>to-niwa@kddi.com</email>
+        <email>ta-miyasaka@kddi-research.jp</email>
       </address>
     </author>
+
 
 
     <!-- TO BE FIXED -->
